@@ -52,6 +52,17 @@ struct NowPlayingApp: App {
                     UIPasteboard.general.string = self.observableNowPlayingService.nowPlaying?.songLinkStr() ?? ""
                     #endif
                 }.keyboardShortcut("C")
+                Button("Copy Artwork") {
+                    if (self.observableNowPlayingService.nowPlaying?.artwork != nil) {
+                        #if os(macOS)
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setData(self.observableNowPlayingService.nowPlaying?.artwork, forType: NSPasteboard.PasteboardType.png)
+                        #else
+                        UIPasteboard.general.image = UIImage(data: (self.observableNowPlayingService.nowPlaying?.artwork)!)
+                        #endif
+                    }
+                }.keyboardShortcut("K")
+
             })
             #if os(macOS)
             CommandMenu("Discord") {
