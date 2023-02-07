@@ -12,12 +12,22 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Text(observableNowPlayingService.nowPlaying?.title ?? "None").multilineTextAlignment(.center)
-            Text(observableNowPlayingService.nowPlaying?.artist ?? "NA").multilineTextAlignment(.center)
-            Text(observableNowPlayingService.nowPlaying?.album ?? "NA").multilineTextAlignment(.center)
+            if (observableNowPlayingService.nowPlaying?.artist != nil) {
+                Text("Artist: \(observableNowPlayingService.nowPlaying?.artist ?? "NA")")
+                    .multilineTextAlignment(.center)
+            }
+            if (observableNowPlayingService.nowPlaying?.album != nil) {
+                Text("Album: \(observableNowPlayingService.nowPlaying?.album ?? "NA")")
+                    .multilineTextAlignment(.center)
+            }
+            
+            
             if observableNowPlayingService.nowPlaying != nil {
                 if (observableNowPlayingService.nowPlaying?.songLink() != nil) {
                     Link("Song Link", destination:
-                            (observableNowPlayingService.nowPlaying?.songLink()) ?? URL(string: "https://song.link")!)                }
+                            (observableNowPlayingService.nowPlaying?
+                                .songLink()) ?? URL(string: "https://song.link")!)
+                }
                 if (observableNowPlayingService.nowPlaying?.albumLink() != nil) {
                     Link("Album Link", destination:
                             (observableNowPlayingService.nowPlaying?.albumLink()) ?? URL(string: "https://album.link")!)
@@ -25,15 +35,22 @@ struct ContentView: View {
             }
             if observableNowPlayingService.nowPlaying?.artwork != nil {
                 #if os(macOS)
-                Image(nsImage: NSImage(data: (observableNowPlayingService.nowPlaying?.artwork)!)! ).resizable().aspectRatio(contentMode: .fit).padding([.all], 10)		
+                Image(nsImage: NSImage(data: (observableNowPlayingService.nowPlaying?.artwork)!)! )
+                    .resizable()
+                    .accessibilityLabel("Album Art")
+                    .aspectRatio(contentMode: .fit)
+                    .padding([.all], 10)
+                    
                 #elseif os(iOS)
-                Image(uiImage:  UIImage(data: (observableNowPlayingService.nowPlaying?.artwork)!)! ).resizable().aspectRatio(contentMode: .fit).padding([.all], 10)
+                Image(uiImage:  UIImage(data: (observableNowPlayingService.nowPlaying?.artwork)!)! ).resizable().aspectRatio(contentMode: .fit).padding([.all], 10).accessibilityLabel("Album Artwork")
                 #endif
             }
             if observableNowPlayingService.nowPlaying != nil {
                 if (observableNowPlayingService.nowPlaying?.songLink() != nil) {
                     ShareLink("Song Link", item:
-                                (observableNowPlayingService.nowPlaying?.songLink()) ?? URL(string: "https://song.link")!).padding([.all], 10)                }
+                                (observableNowPlayingService.nowPlaying?.songLink()) ?? URL(string: "https://song.link")!).padding([.all], 10)
+                        .accessibilityLabel("Share song.link")
+                }
             }
         }
         .padding([.horizontal], 5).frame(minWidth: 300, minHeight: 450)
