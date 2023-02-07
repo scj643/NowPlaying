@@ -1,0 +1,7 @@
+Distribute/**
+Build
+*.DS_Store
+notary.log
+*.pkg
+.notarize
+**/xcuserdata/
