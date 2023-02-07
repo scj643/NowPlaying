@@ -36,12 +36,12 @@ struct ContentView: View {
                                 (observableNowPlayingService.nowPlaying?.songLink()) ?? URL(string: "https://song.link")!).padding([.all], 10)                }
             }
         }
-        .padding([.horizontal], 5).frame(minWidth: 255, minHeight: 150)
+        .padding([.horizontal], 5).frame(minWidth: 300, minHeight: 450)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(observableNowPlayingService: ObservableNowPlayingService()).frame(width: 300, height: 300, alignment: .center)
+        ContentView(observableNowPlayingService: ObservableNowPlayingService()).frame(width: 300, height: 450, alignment: .center)
     }
 }
