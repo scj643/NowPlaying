@@ -15,6 +15,8 @@
 		2030F7642953590900256FB9 /* NowPlayingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2030F7632953590900256FB9 /* NowPlayingUITests.swift */; };
 		2030F7662953590900256FB9 /* NowPlayingUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2030F7652953590900256FB9 /* NowPlayingUITestsLaunchTests.swift */; };
 		2030F77329536D9C00256FB9 /* MediaRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2030F77229536D9C00256FB9 /* MediaRemote.swift */; };
+		208CF2FA29928D9800BBCAF7 /* SwordRPC in Frameworks */ = {isa = PBXBuildFile; platformFilters = (macos, ); productRef = 208CF2F929928D9800BBCAF7 /* SwordRPC */; };
+		208CF2FC29928E6400BBCAF7 /* Discord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 208CF2FB29928E6400BBCAF7 /* Discord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,7 @@
 		2030F7632953590900256FB9 /* NowPlayingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingUITests.swift; sourceTree = "<group>"; };
 		2030F7652953590900256FB9 /* NowPlayingUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2030F77229536D9C00256FB9 /* MediaRemote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRemote.swift; sourceTree = "<group>"; };
+		208CF2FB29928E6400BBCAF7 /* Discord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Discord.swift; sourceTree = "<group>"; };
 		20E629172991748200ACAF1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -55,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				208CF2FA29928D9800BBCAF7 /* SwordRPC in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +109,7 @@
 				2030F74D2953590800256FB9 /* NowPlaying.entitlements */,
 				2030F74E2953590800256FB9 /* Preview Content */,
 				2030F77229536D9C00256FB9 /* MediaRemote.swift */,
+				208CF2FB29928E6400BBCAF7 /* Discord.swift */,
 			);
 			path = NowPlaying;
 			sourceTree = "<group>";
@@ -150,6 +155,9 @@
 			dependencies = (
 			);
 			name = NowPlaying;
+			packageProductDependencies = (
+				208CF2F929928D9800BBCAF7 /* SwordRPC */,
+			);
 			productName = NowPlaying;
 			productReference = 2030F7442953590800256FB9 /* NowPlaying.app */;
 			productType = "com.apple.product-type.application";
@@ -222,6 +230,9 @@
 				Base,
 			);
 			mainGroup = 2030F73B2953590700256FB9;
+			packageReferences = (
+				208CF2F829928D9800BBCAF7 /* XCRemoteSwiftPackageReference "SwordRPC" */,
+			);
 			productRefGroup = 2030F7452953590800256FB9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -264,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				208CF2FC29928E6400BBCAF7 /* Discord.swift in Sources */,
 				2030F74A2953590800256FB9 /* ContentView.swift in Sources */,
 				2030F7482953590800256FB9 /* NowPlayingApp.swift in Sources */,
 				2030F77329536D9C00256FB9 /* MediaRemote.swift in Sources */,
@@ -451,7 +463,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.scj643.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -495,7 +507,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 13.1;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = me.scj643.NowPlaying;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -636,6 +648,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		208CF2F829928D9800BBCAF7 /* XCRemoteSwiftPackageReference "SwordRPC" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scj643/SwordRPC";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		208CF2F929928D9800BBCAF7 /* SwordRPC */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 208CF2F829928D9800BBCAF7 /* XCRemoteSwiftPackageReference "SwordRPC" */;
+			productName = SwordRPC;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2030F73C2953590700256FB9 /* Project object */;
 }

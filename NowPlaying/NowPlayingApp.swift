@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+#if os(macOS)
+import SwordRPC
+#endif
 
 @main
 struct NowPlayingApp: App {
     var observableNowPlayingService: ObservableNowPlayingService
     #if os(macOS)
     @NSApplicationDelegateAdaptor private var appDelegate: AppDelegate
+    let discord = Discord()
+    @State var discordState: String = "Connect Discord"
     #endif
     init() {
         self.observableNowPlayingService = ObservableNowPlayingService()
@@ -36,7 +41,6 @@ struct NowPlayingApp: App {
             #endif
         }
         .commands {
-
             CommandGroup(replacing: .newItem, addition: { })
             CommandGroup(replacing: .pasteboard, addition: {
                 Button("Copy Nowplaying") {
@@ -49,6 +53,30 @@ struct NowPlayingApp: App {
                     #endif
                 }.keyboardShortcut("C")
             })
+            #if os(macOS)
+            CommandMenu("Discord") {
+                Button(self.discordState) {
+                    if (self.discord.connected) {
+                        self.discord.disconnect()
+                        self.discordState = "Connect Discord"
+                    } else {
+                        self.discord.connect()
+                        self.discord.listen()
+                        if (self.discord.connected) {
+                            self.discordState = "Disconnect Discord"
+                        } else {
+                            // If we fail to connect reset client once
+                            self.discord.rpc = SwordRPC(appId: "1065440072826105896", handlerInterval: 2000)
+                            self.discord.connect()
+                            self.discord.listen()
+                            if (self.discord.connected) {
+                                self.discordState = "Disconnect Discord"
+                            }
+                        }
+                    }
+                }.keyboardShortcut("D")
+            }
+            #endif
             CommandGroup(replacing: .textEditing, addition: { })
             CommandGroup(replacing: .undoRedo, addition: { })
         }
