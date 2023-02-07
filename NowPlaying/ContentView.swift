@@ -13,12 +13,16 @@ struct ContentView: View {
         VStack {
             Text(observableNowPlayingService.nowPlaying?.title ?? "None").multilineTextAlignment(.center)
             if (observableNowPlayingService.nowPlaying?.artist != nil) {
-                Text("Artist: \(observableNowPlayingService.nowPlaying?.artist ?? "NA")")
-                    .multilineTextAlignment(.center)
+                if (observableNowPlayingService.nowPlaying?.artist != "") {
+                    Text("Artist: \(observableNowPlayingService.nowPlaying?.artist ?? "NA")")
+                        .multilineTextAlignment(.center)
+                }
             }
             if (observableNowPlayingService.nowPlaying?.album != nil) {
-                Text("Album: \(observableNowPlayingService.nowPlaying?.album ?? "NA")")
-                    .multilineTextAlignment(.center)
+                if (observableNowPlayingService.nowPlaying?.album != ""){
+                    Text("Album: \(observableNowPlayingService.nowPlaying?.album ?? "NA")")
+                        .multilineTextAlignment(.center)
+                }
             }
             
             
