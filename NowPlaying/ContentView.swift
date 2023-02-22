@@ -12,7 +12,9 @@ struct ContentView: View {
     @AppStorage("onlyMusicApp") var onlyMusicApp = true
     var body: some View {
         VStack {
-            Text(observableNowPlayingService.nowPlaying?.title ?? "None").multilineTextAlignment(.center)
+            Text(observableNowPlayingService.nowPlaying?.title ?? "None")
+                .multilineTextAlignment(.center)
+                .padding([.vertical], 5)
             if (observableNowPlayingService.nowPlaying?.artist != nil) {
                 if (observableNowPlayingService.nowPlaying?.artist != "") {
                     Text("Artist: \(observableNowPlayingService.nowPlaying?.artist ?? "NA")")
@@ -88,10 +90,13 @@ struct ContentView: View {
                 Toggle(isOn: $onlyMusicApp) {
                     Text("Only show Apple Music app in Discord")
                 }
+                .padding([.vertical], 10)
                 #endif
             }
         }
-        .padding([.horizontal], 5).frame(minWidth: 300, minHeight: 450)
+        .padding([.horizontal], 5)
+        .padding([.vertical], 5)
+        .frame(minWidth: 300, minHeight: 450)
     }
 }
 
