@@ -119,6 +119,35 @@ class Discord {
             presence.assets.smallText = "Paused"
         }
         presence.buttons = buttons
+        if (song.albumID != nil) {
+            struct AlbumResults: Decodable {
+                var artworkUrl100: String
+            }
+            struct AlbumArtLookup: Decodable {
+                var resultCount: Int
+                var results: [AlbumResults]
+            }
+            let semaphore = DispatchSemaphore(value: 0)
+            guard let url = URL(string: "https://itunes.apple.com/lookup?id=\(song.albumID!)") else { return presence }
+            let task = URLSession.shared.dataTask(with: url) {
+                data, response, error in
+                let decoder = JSONDecoder()
+                do {
+                    let decoded = try decoder.decode(AlbumArtLookup.self, from: data!)
+                    if (decoded.resultCount == 1) {
+                        let artUrl = decoded.results[0].artworkUrl100.replacingOccurrences(of: "100x100bb", with: "1024x1024bb")
+                        print(artUrl)
+                        presence.assets.largeImage = artUrl
+                    }
+                }
+                catch {
+                    print(error)
+                }
+                semaphore.signal()
+            }
+            task.resume()
+            _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        }
         return presence
     }
 }

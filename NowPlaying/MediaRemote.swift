@@ -65,16 +65,24 @@ class NowPlayingInfo {
         return self.info["kMRMediaRemoteNowPlayingInfoArtworkData"] as? Data ?? nil
     }
     
+    var artworkMIMEType: String? {
+        return self.info["kMRMediaRemoteNowPlayingInfoArtworkMIMEType"] as? String ?? nil
+    }
+    
     func string() -> String {
         var returnString = ""
         if (self.title != nil) {
             returnString += "\(title!)"
         }
         if (self.artist != nil) {
-            returnString += " by \(artist!)"
+            if (self.artist != "") {
+                returnString += " by \(artist!)"
+            }
         }
         if (self.album != nil) {
-            returnString += " (\(album!))"
+            if (self.album != "") {
+                returnString += " (\(album!))"
+            }
         }
         return returnString
     }
@@ -129,7 +137,7 @@ struct MediaRemoteBridge {
     typealias MRMediaRemoteGetNowPlayingApplicationIsPlayingFunction = @convention(c) (DispatchQueue, @escaping (Bool) -> Void) -> Void
     typealias MRNowPlayingClientGetBundleIdentifierFunction = @convention(c) (AnyObject?) -> String
     typealias MRNowPlayingClientGetDisplayNameFunction = @convention(c) (AnyObject?) -> String
-    typealias MRMediaRemoteGetNowPlayingClientFunction = @convention(c) (DispatchQueue, @escaping (AnyObject) -> Void) -> Void
+    typealias MRMediaRemoteGetNowPlayingClientFunction = @convention(c) (DispatchQueue, @escaping (NSObject) -> Void) -> Void
     
     var MRMediaRemoteRegisterForNowPlayingNotifications: MRMediaRemoteRegisterForNowPlayingNotificationsFunction
     var MRMediaRemoteUnregisterForNowPlayingNotifications: MRMediaRemoteUnregisterForNowPlayingNotificationsFunction
@@ -232,6 +240,8 @@ class ObservableNowPlayingService: ObservableObject {
     @Published var nowPlaying: NowPlayingInfo?
     private var mediaRemote = MediaRemoteBridge()
     private var observer: NSObjectProtocol?
+    @Published var client: AnyObject?
+    public var remote = MediaRemoteBridge()
     
     init() {
         self.observer = NotificationCenter.default.addObserver(forName: NowPlayingNotificationsChanges.info, object: nil, queue: .main, using: { notification in
@@ -239,6 +249,9 @@ class ObservableNowPlayingService: ObservableObject {
         })
         self.mediaRemote.MRMediaRemoteRegisterForNowPlayingNotifications(DispatchQueue.main)
         updateSongs()
+        (self.remote.MRMediaRemoteGetNowPlayingClient)(DispatchQueue.main) { clientObject in
+            self.client = clientObject
+        }
     }
     
     deinit {
