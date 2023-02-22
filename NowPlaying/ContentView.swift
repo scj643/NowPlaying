@@ -50,11 +50,40 @@ struct ContentView: View {
                 #endif
             }
             if observableNowPlayingService.nowPlaying != nil {
+                Button("Copy Nowplaying as string") {
+#if os(macOS)
+                    NSPasteboard.general.clearContents()
+                    NSPasteboard.general.setString(self.observableNowPlayingService.nowPlaying?.string() ?? "",
+                                                   forType: NSPasteboard.PasteboardType.string)
+#else
+                    UIPasteboard.general.string = self.observableNowPlayingService.nowPlaying?.string() ?? ""
+#endif
+                }
+                #if DEBUG
+                Button("Dump nowplaying to log") {
+                    if (self.observableNowPlayingService.nowPlaying != nil) {
+                        for (k, v) in self.observableNowPlayingService.nowPlaying!.info {
+                            NSLog("%@ - %@", [k, v])
+                        }
+                    }
+                    if (self.observableNowPlayingService.client != nil) {
+                        print(self.observableNowPlayingService.client ?? "<NIL>")
+                    }
+                    
+                }
+                Button("Dump bundle to log") {
+                    (self.observableNowPlayingService.remote.MRMediaRemoteGetNowPlayingClient)(DispatchQueue.main) { clientObject in
+                        let appBundleIdentifier = self.observableNowPlayingService.remote.MRNowPlayingClientGetBundleIdentifier(clientObject)
+                        print(appBundleIdentifier)
+                    }
+                }
+                #endif
                 if (observableNowPlayingService.nowPlaying?.songLink() != nil) {
                     ShareLink("Song Link", item:
                                 (observableNowPlayingService.nowPlaying?.songLink()) ?? URL(string: "https://song.link")!).padding([.all], 10)
                         .accessibilityLabel("Share song.link")
                 }
+                
             }
         }
         .padding([.horizontal], 5).frame(minWidth: 300, minHeight: 450)
