@@ -72,14 +72,14 @@ class Discord {
                 let newNowPlaying = NowPlayingInfo(info: information)
                 if newNowPlaying.string() != self.nowPlaying.string() {
                     self.nowPlaying = newNowPlaying
-                    self.rpc.setPresence(self.npToPresence(song: self.nowPlaying, app: self.app, isPlaying: self.playing))
+                    self.rpc.setPresence(self.getPresence())
                 }
             }
         })
         self.playingObserver = NotificationCenter.default.addObserver(forName: NowPlayingNotificationsChanges.isPlaying, object: nil, queue: nil, using: { notification in
             (remote.MRMediaRemoteGetNowPlayingApplicationIsPlaying)(DispatchQueue.main) { isPlaying in
                 self.playing = isPlaying
-                self.rpc.setPresence(self.npToPresence(song: self.nowPlaying, app: self.app, isPlaying: self.playing))
+                self.rpc.setPresence(self.getPresence())
             }
         })
         remote.MRMediaRemoteRegisterForNowPlayingNotifications(DispatchQueue.main)
@@ -88,6 +88,9 @@ class Discord {
     func npToPresence(song: NowPlayingInfo, app: String, isPlaying: Bool) -> RichPresence {
         var presence = RichPresence()
         presence.instance = false
+        if (app != "Music" && UserDefaults.standard.bool(forKey: "onlyMusicApp")) {
+            return presence
+        }
         presence.details = "\(song.title ?? "")"
         if (song.artist != nil) {
             presence.details = (presence.details ?? "") + " by \(song.artist ?? "")"

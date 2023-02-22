@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @ObservedObject var observableNowPlayingService: ObservableNowPlayingService
+    @AppStorage("onlyMusicApp") var onlyMusicApp = true
     var body: some View {
         VStack {
             Text(observableNowPlayingService.nowPlaying?.title ?? "None").multilineTextAlignment(.center)
@@ -83,7 +84,11 @@ struct ContentView: View {
                                 (observableNowPlayingService.nowPlaying?.songLink()) ?? URL(string: "https://song.link")!).padding([.all], 10)
                         .accessibilityLabel("Share song.link")
                 }
-                
+                #if os(macOS)
+                Toggle(isOn: $onlyMusicApp) {
+                    Text("Only show Apple Music app in Discord")
+                }
+                #endif
             }
         }
         .padding([.horizontal], 5).frame(minWidth: 300, minHeight: 450)
