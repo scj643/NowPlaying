@@ -52,6 +52,15 @@ struct NowPlayingApp: App {
                     UIPasteboard.general.string = self.observableNowPlayingService.nowPlaying?.songLinkStr() ?? ""
                     #endif
                 }.keyboardShortcut("C")
+                Button("Copy Nowplaying as string") {
+                    #if os(macOS)
+                    NSPasteboard.general.clearContents()
+                    NSPasteboard.general.setString(self.observableNowPlayingService.nowPlaying?.string() ?? "",
+                                                   forType: NSPasteboard.PasteboardType.string)
+                    #else
+                    UIPasteboard.general.string = self.observableNowPlayingService.nowPlaying?.string() ?? ""
+                    #endif
+                }.keyboardShortcut("C", modifiers: [.command, .shift])
                 Button("Copy Artwork") {
                     if (self.observableNowPlayingService.nowPlaying?.artwork != nil) {
                         #if os(macOS)
